@@ -17,9 +17,12 @@ GPIO.setup(PIN_NUM, GPIO.IN)
 PREV_TIME=time.time() 
 CUR_TIME=time.time() 
 
+vibration_counts = []
+filename = "/home/rpi/Documents/sensors/vibration_data.txt"  # 저장할 파일 경로
+send_count = 0
+
 try:
     i = 0
-    vibration_counts = []
     while True:
         if GPIO.input(PIN_NUM) == CHECK_ON:
             i += 1
@@ -36,14 +39,18 @@ try:
 
             # 리스트에 4개 값이 있으면 파이어베이스에 데이터 보내기
             if len(vibration_counts) >= 4:
+                send_count += 1
                 # 예시: 파이어베이스에 데이터 보내기
                 #doc_ref = db.collection('vibration_data').document()
                 #doc_ref.set({'counts': vibration_counts, 'timestamp': firestore.SERVER_TIMESTAMP})
-                print("Data sent to Firebase")
-
-                # 1분 동안 멈추기
+                #print("Data sent to Firebase")
+                with open(filename, "w") as file:
+                    file.write(str(send_count))
+                print(f"{send_count} set Data written to file")
+                
+                # 30초 동안 멈추기
                 time.sleep(30)
-                vibration_counts = []  # 리스 초기화
+                vibration_counts = []  # 리스트 초기화
 
         time.sleep(0.01)
 

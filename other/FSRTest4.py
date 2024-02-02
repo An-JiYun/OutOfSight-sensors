@@ -39,13 +39,6 @@ def log_pressure_data(channels, analog_values, voltages):
         'timestamp': firestore.SERVER_TIMESTAMP
     })
 
-def log_vibration_data():
-    doc_ref = db.collection('vibration_data').document()
-    doc_ref.set({
-        'voltage': voltages,
-        'timestamp': firestore.SERVER_TIMESTAMP
-    })
-
 # MCP3008에서 데이터 읽기 함수
 def read_mcp3008(channel):
     adc = spi.xfer2([1, (8 + channel) << 4, 0])
