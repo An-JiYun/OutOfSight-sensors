@@ -48,8 +48,8 @@ try:
                     file.write(str(send_count))
                 print(f"{send_count} set Data written to file")
                 
-                # 30초 동안 멈추기
-                time.sleep(30)
+                # 10초 동안 멈추기
+                time.sleep(10)
                 vibration_counts = []  # 리스트 초기화
 
         time.sleep(0.01)

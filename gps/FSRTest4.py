@@ -15,7 +15,6 @@ db = firestore.client()
 
 
 # GPIO 핀 번호 설정
-#pressure_pins = [4, 17, 27, 22]  # 4개의 압력 센서 연결 핀 (디지털 입력용)
 mcp3008_channels = [0, 1, 2, 3]  # MCP3008의 사용할 채널 번호들
 
 # SPI 설정
@@ -25,9 +24,6 @@ spi.max_speed_hz = 1350000
 
 # GPIO 설정
 GPIO.setmode(GPIO.BCM)
-#for pin in pressure_pins:
-#    GPIO.setup(pin, GPIO.IN)
-
 
 # Firestore에 데이터를 저장하는 함수
 def log_pressure_data(channels, analog_values, voltages):
@@ -45,6 +41,7 @@ def read_mcp3008(channel):
     data = ((adc[1] & 3) << 8) + adc[2]
     return data
 
+#voltage_list = [0.13, 0.08, 0.13, 0.1]
 
 # 메인 루프
 while True:
@@ -60,6 +57,7 @@ while True:
         # 아날로그 값을 3.3V 기준으로 변환하여 전압으로 계산
         voltage = analog_value * 3.3 / 1023
         
+        #if (voltage > voltage_list[channel]):
         if (voltage > 0.1):
             FSR_detect_count += 1
             channels.append(channel)
@@ -67,12 +65,13 @@ while True:
             voltages.append(voltage)
             #읽은 아날로그 값과 계산된 전압 출력
             print(f"Channel {channels}: Analog Value = {analog_values}, Voltage = {voltages}")
-            
         
-    # 파이어베이스에 데이터 값 넣기
+        
+# 파이어베이스에 데이터 값 넣기
     if (FSR_detect_count >= 2):
+        #print(f"Channel {channels}: Analog Value = {analog_values}, Voltage = {voltages}")
         log_pressure_data(channels, analog_values, voltages) 
 
     # 데이터 스팸 방지를 위한 잠시 대기
-    time.sleep(0.10)
+    time.sleep(0.5)
     
