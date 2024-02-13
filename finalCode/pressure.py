@@ -38,7 +38,7 @@ while True:
         voltage = analog_value * 3.3 / 1023
         
         #if (voltage > voltage_list[channel]):
-        if (voltage > 0.1):
+        if (voltage):
             FSR_detect_count += 1
             channels.append(channel)
             analog_values.append(analog_value)
@@ -53,6 +53,7 @@ while True:
         with open(filename, "w") as file:
             file.write("true")
         print(f"pressure Data written to file")
+        time.sleep(10)
         
     # 데이터 스팸 방지 등을 위한 잠시 대기
     time.sleep(1)
