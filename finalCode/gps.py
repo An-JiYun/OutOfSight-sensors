@@ -42,16 +42,16 @@ try:
                     sub_lat = abs(pre_lat - lat)
                     sub_lng = abs(pre_lng - lng)                    
                     
-                    if(sub_lat>0.00005):
+                    if(sub_lat>0.0001 or sub_lng>0.0001):
                         with open(filename, "w") as file:
                             file.write(f"{lat} {lng}")
                         print(f"Latitude={lat} and Longitude={lng} GPS Data written to file")
                         pre_lat = lat
                         pre_lng = lng
                     else : 
-                        print("very small distance, don't write")
+                        print(f"Latitude={lat} and Longitude={lng} very small distance, don't write")
                 
-                time.sleep(10)
+            time.sleep(0.1)
                 
 except KeyboardInterrupt:
     print("Program terminated by user")
