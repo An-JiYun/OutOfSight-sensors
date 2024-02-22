@@ -15,6 +15,7 @@ GPIO.setmode(GPIO.BCM)
 
 filename = "/home/rpi/Documents/sensors/text/pressure_data.txt"  # 저장할 파일 경로
 
+
 # MCP3008에서 데이터 읽기 함수
 def read_mcp3008(channel):
     adc = spi.xfer2([1, (8 + channel) << 4, 0])
@@ -44,16 +45,17 @@ while True:
             analog_values.append(analog_value)
             voltages.append(voltage)
             #읽은 아날로그 값과 계산된 전압 출력
-            print(f"Channel {channels}: Analog Value = {analog_values}, Voltage = {voltages}")
+            #print(f"Channel {channels}: Analog Value = {analog_values}, Voltage = {voltages}")
         
         
     # 텍스트 파일 쓰기
     if (FSR_detect_count >= 2):
         #print(f"Channel {channels}: Analog Value = {analog_values}, Voltage = {voltages}")
         with open(filename, "w") as file:
-            file.write("true")
+            #file.write(f"true {channels} {analog_values} {voltages}")
+            file.write(f"true")
         print(f"pressure Data written to file")
-        time.sleep(10)
+        time.sleep(45)
         
     # 데이터 스팸 방지 등을 위한 잠시 대기
     time.sleep(1)
